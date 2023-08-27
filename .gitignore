@@ -1,1 +1,4 @@
 __pycache__/
+llm-apps-env/
+.DS_Store
+.env
