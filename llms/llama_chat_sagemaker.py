@@ -14,38 +14,20 @@ Required Libraries:
 
 Usage:
 
-    Sample payload:
-
-    payload = {
-    "inputs": [
-        [
-            {
-                "role": "system",
-                "content": "You are a kind robot."
-            },
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ]
-    ],
-        "parameters": model_kwargs
-    }
     1. Install the required libraries:
     
     >>> pip install boto3 langchain
 
-    2. Create an instance of LLamaModel with specific parameters
-    llm = LLamaModel(
-        endpoint_name="ep-llama-7b",
-        credentials_profile="temmie",
+    2. Create an instance of LLamaChatModel with specific parameters
+    llm = LLamaChatModel(
+        endpoint_name="ep-llama-7b-chat",
+        credentials_profile="my-aws-profile",
         max_new_tokens=256,
         top_p=0.8,
         temperature=0.5,
         return_full_text=False)
 
 """
-
 
 import json
 from typing import Dict, List

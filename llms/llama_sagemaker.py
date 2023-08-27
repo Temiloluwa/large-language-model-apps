@@ -20,7 +20,7 @@ Usage:
     2. Create an instance of LLamaModel with specific parameters
     llm = LLamaModel(
         endpoint_name="ep-llama-7b",
-        credentials_profile="temmie",
+        credentials_profile="my-aws-profile",
         max_new_tokens=256,
         top_p=0.8,
         temperature=0.5,
