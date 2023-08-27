@@ -1,6 +1,9 @@
-# llm_apps
+# LLM Apps
+
+This Repo is for researching and prototying llm apps
 
 
-
-## Tutorials
-    1. Langchain 
+## LLMs
+1. llama hosted on Sagemaker
+2. OpenAI GPT models
+3. OpenAI GPT embeddings
