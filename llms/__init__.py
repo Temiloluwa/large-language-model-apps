@@ -1,5 +1,5 @@
-from llama_sagemaker import LLamaModel
-from llama_chat_sagemaker import LLamaChatModel
+from .llama_sagemaker import LLamaModel
+from .llama_chat_sagemaker import LLamaChatModel
 
 
 __all__ = [
