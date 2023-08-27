@@ -1,25 +1,22 @@
 """
+LLama Chat Model Loader from SageMaker Endpoint for Langchain
+
+This module provides functions to load a LLama model deployed on Amazon SageMaker.
+It allows users to retrieve inference endpoints and perform predictions using the model.
+
 Author: Temiloluwa Adeoti
-Description: Classes to load llama models from
-             Sagemaker inference endpoints and use with langchain
-Date: 27-08-2023
+License: MIT License
+Date: August 19, 2023
 
+Required Libraries:
+    - boto3 (Amazon Web Services SDK)
+    - langchain (LLama's Language Model SDK)
 
+Usage:
 
-# Sample payload for llama language model
+    Sample payload:
 
-payload = {
-            "inputs": "Who is the president of Nigeia?",
-            "parameters": {
-                "max_new_tokens": 64,
-                "top_p": 0.9,
-                "temperature": 0.6,
-                "return_full_text": False,
-            }
-        }
-
-# sample payload for llama chat model 
-payload = {
+    payload = {
     "inputs": [
         [
             {
@@ -32,8 +29,21 @@ payload = {
             }
         ]
     ],
-    "parameters": model_kwargs
-}
+        "parameters": model_kwargs
+    }
+    1. Install the required libraries:
+    
+    >>> pip install boto3 langchain
+
+    2. Create an instance of LLamaModel with specific parameters
+    llm = LLamaModel(
+        endpoint_name="ep-llama-7b",
+        credentials_profile="temmie",
+        max_new_tokens=256,
+        top_p=0.8,
+        temperature=0.5,
+        return_full_text=False)
+
 """
 
 
@@ -61,24 +71,13 @@ class ContentHandler(LLMContentHandler):
 
 
 
-class LLamaModel(SagemakerEndpoint):
+class LLamaChatModel(SagemakerEndpoint):
     def __init__(self,
         endpoint_name: str = None,
         credentials_profile: str = None,
-        content_handler: ContentHandler = ContentHandler(),
-        max_new_tokens: int = None,
-        top_p: float = None,
-        temperature: float = None,
-        return_full_text: bool = False):
+        content_handler: ContentHandler = ContentHandler()):
 
-        model_kwargs = {
-            "max_new_tokens": max_new_tokens,
-            "top_p": top_p,
-            "temperature": temperature,
-            "return_full_text": return_full_text
-        }
-
-        model_kwargs = {k:v for k, v in model_kwargs.items() if v is not None}
+        model_kwargs = {}
 
         super(LLamaModel, self).__init__(
             endpoint_name = endpoint_name,
