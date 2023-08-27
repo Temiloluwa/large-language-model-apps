@@ -67,8 +67,6 @@ class LLamaModel(SagemakerEndpoint):
             "return_full_text": return_full_text
         }
 
-        model_kwargs = {k:v for k, v in model_kwargs.items() if v is not None}
-
         super(LLamaModel, self).__init__(
             endpoint_name = endpoint_name,
             credentials_profile_name = credentials_profile,
