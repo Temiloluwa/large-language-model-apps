@@ -1,0 +1,3 @@
+[submodule "lingua_trainer"]
+	path = lingua_trainer
+	url = https://gitlab.com/amazing_ai/lingua_trainer.git
