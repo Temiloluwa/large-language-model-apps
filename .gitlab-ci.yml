@@ -3,6 +3,7 @@
 # 1. Go to child repos under settings > ci/cd > token access
 # 2. Add the parent repo e.g amazing_ai/llm_apps
 ########################
+
 default:
   image:
     name: amazon/aws-cli
@@ -16,9 +17,7 @@ before_script:
   - yum -y install make 
   - aws --version
   - docker --version
-  - make --version
 
- 
 variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: "/certs"
@@ -26,14 +25,18 @@ variables:
   GIT_SUBMODULE_FORCE_HTTPS: "true"
 
 stages:
-  - build
+  - build-deploy
 
-build_image:
-  stage: build
+build-and-deploy-job:
+  stage: build-deploy
   script:
-    - make dh_login
-    - make img_build
-    - make img_pull
+    - cd $DEV_ENV
+    - export KEY_ID=$AWS_ACCESS_KEY_ID # export variables and pass to make file  
+    - export KEY_VALUE=$AWS_SECRET_ACCESS_KEY # makefile passes variables to  dockerfile using --build-args, variables are first declared in dockerfile
+    - export TEST_VAR=$TEST_VAR
+    - make ecr_login
+    - make ecr_build
+    - make ecr_push
   
   rules:
     - if: $CI_COMMIT_BRANCH == "main" && $DEPLOY_IMAGE == "true"
