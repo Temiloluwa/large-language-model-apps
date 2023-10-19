@@ -8,7 +8,7 @@ TARGET_PLATFORM := linux/amd64
 
 
 login:
-	docker login -u $(DOCKERHUB_USERNAME) -p -u $(DOCKERHUB_PASSWORD)
+	docker login -u $(DOCKERHUB_USERNAME) -p $(DOCKERHUB_PASSWORD)
 	
 build:
 	docker build --progress=plain --platform $(TARGET_PLATFORM) -f $(DOCKERFILE) . --no-cache -t $(REPO_NAME)/$(APP_NAME):$(IMAGE_TAG)
