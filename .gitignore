@@ -33,3 +33,7 @@ __pycache__
 lt-backend-env/
 .pdm*
 .pdm-python
+
+llm-apps-env/
+
+*.env/
