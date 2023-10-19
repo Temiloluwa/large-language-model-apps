@@ -16,19 +16,20 @@ variables:
   # 2. Add the parent repo e.g amazing_ai/llm_apps
   ########################
   DOCKER_HOST: tcp://docker:2375
-  DOCKER_TLS_CERTDIR: ""
+  DOCKER_TLS_CERTDIR: "/certs"
   GIT_SUBMODULE_STRATEGY: recursive
   GIT_SUBMODULE_FORCE_HTTPS: "true"
 
 stages:
   - build
-  - deploy
 
 build_image:
   stage: build
+  before_script:
+    - make login
+    
   script:
     - make build
-    - make login
     - make push
   rules:
     - if: $CI_COMMIT_BRANCH == "main" && $DEPLOY_IMAGE == "true"
