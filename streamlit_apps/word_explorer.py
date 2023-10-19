@@ -24,7 +24,7 @@ if st.button("Explore"):
     if not word:
         st.warning("Please enter a word.")
     else:
-        st.info("Exploring...")
+        st.info("Exploring")
         explanations = word_explanator(word)
         for item in explanations:
             st.subheader(word.capitalize())
