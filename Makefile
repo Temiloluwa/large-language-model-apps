@@ -1,5 +1,5 @@
 REPO_NAME := temmiecvml
-APP_NAME := lingua_trainer/word_explorer
+APP_NAME := lingua_trainer
 VERSION := 0.0.1
 IMAGE_TAG := $(REPO_NAME)/$(APP_NAME):$(VERSION)
 DOCKERFILE := Dockerfile.lingua_trainer
