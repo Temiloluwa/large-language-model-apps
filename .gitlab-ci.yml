@@ -27,8 +27,6 @@ build_image:
   stage: build
 
   script:
-    - make login
-    - make build
-    - make push
+    - make login && make build && make push
   rules:
     - if: $CI_COMMIT_BRANCH == "main" && $DEPLOY_IMAGE == "true"
