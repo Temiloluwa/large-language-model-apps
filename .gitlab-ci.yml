@@ -10,6 +10,11 @@ default:
     - make --version
 
 variables:
+  ########################
+  # To effectively clone submodules repos
+  # 1. Go to child repos under settings > ci/cd > token access
+  # 2. Add the parent repo e.g amazing_ai/llm_apps
+  ########################
   DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
   GIT_SUBMODULE_STRATEGY: recursive
