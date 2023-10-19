@@ -8,12 +8,11 @@ default:
   before_script:
     - apk update && apk add make
     - make --version
+    - git clone https://gitlab.com/amazing_ai/lingua_trainer.git
 
 variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
-  GIT_SUBMODULE_STRATEGY: recursive
-  GIT_SUBMODULE_DEPTH: 1
 
 stages:
   - build
