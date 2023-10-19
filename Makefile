@@ -5,10 +5,10 @@ DOCKERFILE := Dockerfile.lingua_trainer
 DOCKERHUB_USERNAME := $(REPO_NAME)
 DOCKERHUB_PASSWORD := $(shell echo $$DOCKERHUB_PASSWORD)
 TARGET_PLATFORM := linux/amd64
-REGISTRY_NAME := hub.docker.com
+REGISTRY_NAME := index.docker.io # docker hub
 
 login:
-	docker login --username $(DOCKERHUB_USERNAME) --password $(DOCKERHUB_PASSWORD) $(REGISTRY_NAME)
+	docker login --username $(DOCKERHUB_USERNAME) --password $(DOCKERHUB_TOKEN) $(REGISTRY_NAME)
 	
 build:
 	docker build --progress=plain --platform $(TARGET_PLATFORM) -f $(DOCKERFILE) . --no-cache -t $(REPO_NAME)/$(APP_NAME):$(IMAGE_TAG)
