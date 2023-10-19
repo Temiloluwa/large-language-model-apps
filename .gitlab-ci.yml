@@ -1,18 +1,19 @@
-# default:
-#   image: docker:24.0.5
-#   services:
-#     - docker:24.0.5-dind
-#   before_script:
-#     - docker info
+default:
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  before_script:
+    - docker info
 
-#   before_script:
-#     - apk update && apk add make
-#     - make --version
+  before_script:
+    - apk update && apk add make
+    - make --version
 
 variables:
-#   DOCKER_HOST: tcp://docker:2375
-#   DOCKER_TLS_CERTDIR: ""
-   GIT_SUBMODULE_STRATEGY: recursive
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
+  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_SUBMODULE_FORCE_HTTPS: "true"
 
 stages:
   - build
