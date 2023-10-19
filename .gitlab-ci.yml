@@ -25,10 +25,9 @@ stages:
 
 build_image:
   stage: build
-  before_script:
-    - make login
-    
+
   script:
+    - make login
     - make build
     - make push
   rules:
