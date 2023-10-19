@@ -6,8 +6,7 @@ default:
     - docker info
 
   before_script:
-    - apt-get update
-    - apt-get install -y make
+    - apk update && apk add make
     - make --version
 
 variables:
