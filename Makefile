@@ -12,7 +12,7 @@ ecr_create_repo:
 	aws --region $(REGION) ecr create-repository --repository-name $(REPO_NAME)
 	
 ecr_build:
-	docker build --progress=plain --platform $(TARGET_PLATFORM) -f $(DOCKERFILE) . --no-cache -t $(IMAGE_TAG) -t $(ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/$(REPO_NAME):$(IMAGE_TAG)
+	docker build --progress=plain -f $(DOCKERFILE) . --no-cache -t $(IMAGE_TAG) -t $(ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/$(REPO_NAME):$(IMAGE_TAG)
 
 ecr_push:
 	docker push $(ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/$(REPO_NAME):$(IMAGE_TAG)
