@@ -25,15 +25,11 @@ variables:
   GIT_SUBMODULE_FORCE_HTTPS: "true"
 
 stages:
-  - build-deploy
+  - build
 
-build-and-deploy-job:
-  stage: build-deploy
+build-job:
+  stage: build
   script:
-    - cd $DEV_ENV
-    - export KEY_ID=$AWS_ACCESS_KEY_ID # export variables and pass to make file  
-    - export KEY_VALUE=$AWS_SECRET_ACCESS_KEY # makefile passes variables to  dockerfile using --build-args, variables are first declared in dockerfile
-    - export TEST_VAR=$TEST_VAR
     - make ecr_login
     - make ecr_build
     - make ecr_push
