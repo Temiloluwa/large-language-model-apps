@@ -1,3 +1,19 @@
+default:
+  image:
+    name: amazon/aws-cli
+    entrypoint: [""]
+
+services:
+  - docker:dind
+
+before_script:
+  - amazon-linux-extras install docker
+  - yum -y install make 
+  - aws --version
+  - docker --version
+  - make --version
+
+ 
 variables:
   ########################
   # To effectively clone submodules repos
@@ -14,18 +30,8 @@ stages:
 
 build_image:
   stage: build
-  image: docker:24.0.5
-  services:
-    - docker:24.0.5-dind
-  before_script:
-    - docker info
-
-  before_script:
-    - apk update && apk add make
-    - make --version
-    - make login
-
   script:
+    - make login
     - make build
     - make push
   
