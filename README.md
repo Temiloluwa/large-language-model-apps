@@ -15,7 +15,3 @@ Lingua trainer can assistant a learner with this tasks to help cement their gras
 
 Naija, that's the way locals call Nigeria.
 I intend to create digests of Nigerian content to give users a "highlight" of what's happening at the moment in Nigeria.
-
-### 3. Sagemaker LLama Apps
-
-Testing Sagemaker Jumpstart llama models and developing an interface to integrate them with Langchain
