@@ -4,12 +4,14 @@ IMAGE_TAG := 0.0.1
 DOCKERFILE := Dockerfile.lingua_trainer
 DOCKERHUB_USERNAME := $(REPO_NAME)
 DOCKERHUB_PASSWORD := $(shell echo $$DOCKERHUB_PASSWORD)
+TARGET_PLATFORM := linux/amd64
+
 
 login:
 	docker login -u $(DOCKERHUB_USERNAME) -p -u $(DOCKERHUB_PASSWORD)
 	
 build:
-	docker build --progress=plain -f $(DOCKERFILE) . --no-cache -t $(REPO_NAME)/$(APP_NAME):$(IMAGE_TAG)
+	docker build --progress=plain --platform $(TARGET_PLATFORM) -f $(DOCKERFILE) . --no-cache -t $(REPO_NAME)/$(APP_NAME):$(IMAGE_TAG)
 	
 push:
 	docker push $(REPO_NAME)/$(APP_NAME):$(IMAGE_TAG)
