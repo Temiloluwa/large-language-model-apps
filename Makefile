@@ -8,17 +8,17 @@ DOCKERHUB_PASSWORD := $(shell echo $$DOCKERHUB_PASSWORD)
 TARGET_PLATFORM := linux/amd64
 REGISTRY_NAME := index.docker.io # docker hub
 
-login:
+dh_login:
 	docker login --username $(DOCKERHUB_USERNAME) --password $(DOCKERHUB_TOKEN) $(REGISTRY_NAME)
 	
-build:
+img_build:
 	docker build --progress=plain --platform $(TARGET_PLATFORM) -f $(DOCKERFILE) . --no-cache -t $(IMAGE_TAG)
 	
-push:
+img_push:
 	docker push 
 
-pull:
+img_pull:
 	docker pull $(IMAGE_TAG)
 
-run:
+con_run:
 	docker run -d -p 80:8501 $(IMAGE_TAG)
