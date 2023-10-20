@@ -1,6 +1,6 @@
 REPO_NAME := temmiecvml
 APP_NAME := lingua_trainer
-IMAGE_TAG := 0.0.1
+IMAGE_TAG := 0.0.2
 DOCKERFILE := Dockerfile.lingua_trainer
 DOCKERHUB_USERNAME := $(REPO_NAME)
 DOCKERHUB_TOKEN := $(shell echo $$DOCKERHUB_TOKEN)
