@@ -1,23 +1,24 @@
 REPO_NAME := temmiecvml
 APP_NAME := lingua_trainer
-IMAGE_TAG := 0.0.2
+VERSION := 0.0.2
 DOCKERFILE := Dockerfile.lingua_trainer
-DOCKERHUB_USERNAME := $(REPO_NAME)
-DOCKERHUB_TOKEN := $(shell echo $$DOCKERHUB_TOKEN)
+CI_REGISTRY_USER := $(REPO_NAME)
+#CI_REGISTRY_PASSWORD := $(shell echo $$CI_REGISTRY_PASSWORD)
 TARGET_PLATFORM := linux/amd64
-REGISTRY_NAME := index.docker.io # docker hub
+CI_REGISTRY := docker.io # docker hub
+CI_REGISTRY_IMAGE := index.docker.io/$(REPO_NAME)/$(APP_NAME):$(VERSION)
 
 login:
-	docker login --username $(DOCKERHUB_USERNAME) --password $(DOCKERHUB_TOKEN) $(REGISTRY_NAME)
+	docker login --username $(CI_REGISTRY_USER) --password-stdin $(CI_REGISTRY_PASSWORD) $(CI_REGISTRY)
 	
 build:
-	docker build --progress=plain --platform $(TARGET_PLATFORM) -f $(DOCKERFILE) . --no-cache -t $(REPO_NAME)/$(APP_NAME):$(IMAGE_TAG)
+	docker build --progress=plain --platform $(TARGET_PLATFORM) -f $(DOCKERFILE) . --no-cache -t $(CI_REGISTRY_IMAGE)
 	
 push:
-	docker push $(REPO_NAME)/$(APP_NAME):$(IMAGE_TAG)
+	docker push $(CI_REGISTRY_IMAGE)
 
 pull:
-	docker pull $(REPO_NAME)/$(APP_NAME):$(IMAGE_TAG)
+	docker pull $(CI_REGISTRY_IMAGE)
 
 run:
-	docker run -d -p 80:8501 $(REPO_NAME)/$(APP_NAME):$(IMAGE_TAG)
+	docker run -d -p 80:8501 $(CI_REGISTRY_IMAGE)
