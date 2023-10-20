@@ -8,6 +8,7 @@ default:
   before_script:
     - apk update && apk add make
     - make --version
+    - make login
 
 variables:
   ########################
@@ -22,12 +23,10 @@ variables:
 
 stages:
   - build
-  - deploy
 
 build_image:
   stage: build
   script:
-    - make login
     - make build
     - make push
   rules:
