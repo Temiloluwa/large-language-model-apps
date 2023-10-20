@@ -9,7 +9,7 @@ CI_REGISTRY := docker.io # docker hub
 CI_REGISTRY_IMAGE := index.docker.io/$(REPO_NAME)/$(APP_NAME):$(VERSION)
 
 login:
-	docker login --username $(CI_REGISTRY_USER) --password-stdin $(CI_REGISTRY_PASSWORD) $(CI_REGISTRY)
+	docker login --username $(CI_REGISTRY_USER) --password $(CI_REGISTRY_PASSWORD) $(CI_REGISTRY)
 	
 build:
 	docker build --progress=plain --platform $(TARGET_PLATFORM) -f $(DOCKERFILE) . --no-cache -t $(CI_REGISTRY_IMAGE)
