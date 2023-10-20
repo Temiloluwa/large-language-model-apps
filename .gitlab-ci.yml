@@ -1,38 +1,34 @@
-########################
-# To effectively clone submodules repos
-# 1. Go to child repos under settings > ci/cd > token access
-# 2. Add the parent repo e.g amazing_ai/llm_apps
-########################
-
 default:
-  image:
-    name: amazon/aws-cli
-    entrypoint: [""]
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  before_script:
+    - docker info
 
-services:
-  - docker:dind
-
-before_script:
-  - amazon-linux-extras install docker
-  - yum -y install make 
-  - aws --version
-  - docker --version
+  before_script:
+    - apk update && apk add make
+    - make --version
 
 variables:
+  ########################
+  # To effectively clone submodules repos
+  # 1. Go to child repos under settings > ci/cd > token access
+  # 2. Add the parent repo e.g amazing_ai/llm_apps
+  ########################
   DOCKER_HOST: tcp://docker:2375
-  DOCKER_TLS_CERTDIR: "/certs"
+  DOCKER_TLS_CERTDIR: ""
   GIT_SUBMODULE_STRATEGY: recursive
   GIT_SUBMODULE_FORCE_HTTPS: "true"
 
 stages:
   - build
+  - deploy
 
-build-job:
+build_image:
   stage: build
   script:
-    - make ecr_login
-    - make ecr_build
-    - make ecr_push
-  
+    - make login
+    - make build
+    - make push
   rules:
     - if: $CI_COMMIT_BRANCH == "main" && $DEPLOY_IMAGE == "true"
