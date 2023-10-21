@@ -2,6 +2,7 @@
 
 In this repo, I learn, research, and develop LLM apps for different applications.
 
+
 ## Projects
 
 ### 1. [Lingua Trainer](https://github.com/Temiloluwa/lingua_trainer)
@@ -16,4 +17,14 @@ Lingua trainer can assistant a learner with this tasks to help cement their gras
 Naija, that's the way locals call Nigeria.
 I intend to create digests of Nigerian content to give users a "highlight" of what's happening at the moment in Nigeria.
 
+## Frontend
+
+There are two possible front end deployments available for the LLM apps
+
+1. Streamlit which provides a quicker front end development time
+2. React
+
+## Backend
+
+The backend is developed using FastAPI and MongoDB
 
