@@ -1,3 +1,0 @@
-streamlit
-queryverse==0.1.1
-st-pages
