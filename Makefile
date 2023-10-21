@@ -1,10 +1,10 @@
 REPO_NAME := temmiecvml
 APP_NAME := lingua_trainer
-VERSION := 0.0.2
+VERSION := 0.0.2-g # g refers to arm version
 DOCKERFILE := Dockerfile.lingua_trainer
 CI_REGISTRY_USER := $(REPO_NAME) # add to ci/cd > variables 
 CI_REGISTRY_PASSWORD := $(shell echo $$CI_REGISTRY_PASSWORD) # add to ci/cd > variables 
-TARGET_PLATFORM := linux/amd64
+TARGET_PLATFORM := linux/arm64 # linux/arm64, linux/amd64
 CI_REGISTRY := docker.io # add to ci/cd > variables  
 CI_REGISTRY_IMAGE := index.docker.io/$(REPO_NAME)/$(APP_NAME):$(VERSION)
 
