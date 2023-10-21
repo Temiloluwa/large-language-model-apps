@@ -1,0 +1,20 @@
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[project]
+name = "queryverse"
+version = "0.1.1"
+description = "A lightweight prompting library"
+authors = [
+    {name = "temiloluwa", email = "temilolu74@gmail.com"},
+]
+dependencies = [
+    "openai>=0.28.1",
+    "python-dotenv>=1.0.0",
+]
+requires-python = ">=3.9"
+readme = "README.md"
+license = {text = "MIT"}
+
