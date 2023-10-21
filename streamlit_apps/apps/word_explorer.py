@@ -1,5 +1,4 @@
 import streamlit as st
-from lingua_trainer.app.word_explorer import word_explanator, sentence_generator, get_llm
 from st_pages import Page, Section, add_page_title, show_pages
 
 show_pages(
