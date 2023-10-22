@@ -7,10 +7,10 @@ app_list = [
 
 show_pages(
     [
-        Page("app.py", "Home", "🏠"),
+        Page("run.py", "Home", "🏠"),
         # Can use :<icon-name>: or the actual icon
         Section(name="Lingua Trainer", icon=":teacher:"),
-        Page("streamlit_apps/word_explorer.py", "Word Explorer", ":books:"),
+        Page("apps/word_explorer.py", "Word Explorer", ":books:"),
     ]
 )
 
