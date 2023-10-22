@@ -50,6 +50,7 @@ class OpenAI(LLM):
 
         messages = []
         usage = response.get("usage")
+        usage = usage.to_dict() if hasattr(usage, 'to_dict') else usage
         for choice in response.get("choices"):
             messages.append({
                 choice["message"]["role"]: choice["message"]["content"],
@@ -77,7 +78,7 @@ class OpenAI(LLM):
 
         for chunk in response:
             chunk_message = chunk.get('choices')[0].get('delta')
-            yield [{
-                chunk_message.get("role", ""): chunk_message.get("content", ""),
+            yield {
+                chunk_message.get("role", "no_role"): chunk_message.get("content", ""),
                 "finish_reason": chunk.get('choices')[0].get('finish_reason')
-            }]
+            }
