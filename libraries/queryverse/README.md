@@ -1,6 +1,6 @@
-# queryverse Library
+# Queryverse Library
 
-queryverse is a very lightweight prompting Python library
+Queryverse is a very lightweight prompting Python library
 
 ## Installation
 
@@ -14,5 +14,5 @@ pip install queryverse
 
 - tool name: [PDM](https://pdm.fming.dev/latest/)
 - minimum version: python 3.9
-- dependencies: `pdm add openai python-dotenv`
+- dependencies: `pdm add openai `
 
