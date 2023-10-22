@@ -1,7 +1,6 @@
 import openai
 from queryverse.llm import LLM
 
-
 class OpenAI(LLM):
     @classmethod
     def prompt(cls,
@@ -16,7 +15,7 @@ class OpenAI(LLM):
         Args:
             messages (list): List of message objects.
             temperature (float | int): Temperature for randomness in generating responses.
-            max_tokens (int): Maximum number of tokens in the response (default is infinity).
+            max_tokens (int): Maximum number of tokens in the response (default is 3900).
             top_p (int): Value controlling the diversity of responses (default is 1).
             stream (bool): Whether to use stream-based responses (default is True).
             model (str): Name of the model to use (default is 'gpt-3.5-turbo').
@@ -32,7 +31,6 @@ class OpenAI(LLM):
             top_p=top_p,
             model=model,
             stream=stream)
-
 
         response = cls.response_parser_chunked(response) if stream else \
                  cls.response_parser(response)
