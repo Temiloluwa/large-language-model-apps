@@ -55,3 +55,15 @@ async def generate_sentences(
         }
     except Exception as e:
         return HTTPException(status_code=400, detail=str(e))
+
+from fastapi.responses import StreamingResponse
+import time
+def generate_data():
+    for i in range(1, 100):
+        time.sleep(1)
+        yield f"Data item {i}\n"
+
+@router.get("/word_explorer/generate_sentences/stream_data")
+async def stream_data():
+    data_generator = generate_data()
+    return StreamingResponse(data_generator, media_type="text/plain")

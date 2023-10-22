@@ -2,15 +2,15 @@ from abc import ABC, abstractmethod
 
 class LLM(ABC):
     @abstractmethod
-    def prompt(self):
+    def prompt(cls):
         pass
 
 
     @abstractmethod
-    def create_llm(self):
+    def response_parser(cls):
         pass
 
-
+    
     @abstractmethod
-    def response_parser(self):
+    def response_parser_chunked(cls):
         pass
