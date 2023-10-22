@@ -7,10 +7,6 @@ class LLM(ABC):
 
 
     @abstractmethod
-    def load_api_key(self):
-        pass
-
-    @abstractmethod
     def create_llm(self):
         pass
 

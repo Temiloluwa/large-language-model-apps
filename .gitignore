@@ -40,3 +40,5 @@ llm-apps-env/
 
 backend/run.sh
 backend-env/
+
+*try.py

@@ -1,26 +1,26 @@
 import os
 from dotenv import load_dotenv
-from queryverse.utils import ApiKeyNotFoundError
 
 
-def get_api_key(api_key:str = None) -> str:
-    """_summary_
+def load_env_var(env_name: str = "OPENAI_API_KEY", 
+                env_path: str | None = None) -> str:
+    """
+        Load an environment variable from a .env file
 
     Args:
-        api_key (str, optional): _description_. Defaults to None.
-
-    Raises:
-        ApiKeyNotFoundError: _description_
-
+        env_name: The name of the environment variable
+        env_path: The path to the env file
+    
     Returns:
-        str: _description_
+        str: value of the environment variable
     """
-    
-    if not api_key:
-        load_dotenv()
-        api_key = os.getenv("OPENAI_API_KEY", "")
-    
-    if api_key is None or not api_key:
-        raise ApiKeyNotFoundError("API key not found")
+    if env_path and os.path.exists(env_path):
+        load_dotenv(env_path)
+
     else:
-        return api_key
+        load_dotenv()
+    
+    env_var = os.getenv(env_name, "")
+
+    
+    return env_var

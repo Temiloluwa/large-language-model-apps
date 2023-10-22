@@ -1,6 +1,6 @@
 import openai
 import os
-from queryverse.utils import ApiKeyNotFoundError, get_api_key
+from queryverse.utils import load_env_var
 from queryverse.llm import LLM
 
 class OpenAI(LLM):
@@ -9,23 +9,16 @@ class OpenAI(LLM):
             model_name="gpt-3.5-turbo",
             api_key=None,
             temperature=0):
+        
         super(OpenAI, self).__init__()
         self._model_name = model_name
         self._temperature = temperature
-        self.load_api_key(api_key)
-
-        
-    def load_api_key(self, api_key):
-        """ load api key """
-        try:
-            openai.api_key = get_api_key(api_key)
-        except ApiKeyNotFoundError as e:
-            raise e
+        self._api_key = api_key
 
     def create_llm(self):
         pass
 
-
+    @classmethod
     def prompt(self, messages=None):
         """prompt a model """
         response = openai.ChatCompletion.create(
