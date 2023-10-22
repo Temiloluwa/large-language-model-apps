@@ -36,4 +36,9 @@ lt-backend-env/
 
 llm-apps-env/
 
-*.env/
+*env/
+
+backend/run.sh
+backend-env/
+
+*try.py
