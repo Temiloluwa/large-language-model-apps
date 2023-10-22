@@ -19,7 +19,7 @@ setup(
     ],
     keywords="lightweight llm prompting library",
     install_requires=[
-        "openai", "python-dotenv"
+        "openai"
     ],
     python_requires=">=3.9",
 )
