@@ -1,8 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing_extensions import Annotated
 from functools import lru_cache
+from fastapi.responses import StreamingResponse
 from .models import (WEWordRequest, WESentenceRequest, Settings)
-from .word_explorer import (word_explanator, sentence_generator, get_llm)
+from .word_explorer import (word_explainer, sentence_generator, stream_examples)
 
 router = APIRouter()
 
@@ -13,18 +14,14 @@ def get_settings():
 
 @router.post("/word_explorer/word_explainer")
 async def explain(
-        request_data: WEWordRequest,
-        settings: Annotated[Settings, Depends(get_settings)], 
+        request_data: WEWordRequest, 
         temperature: float | int = 1
     ):
     word = request_data.word
-    request_api_key = request_data.api_key
     temperature = float(temperature)
     
     try:
-        api_key = settings.api_key if not request_api_key else request_api_key
-        gpt = get_llm(api_key, temperature)
-        result = word_explanator(word, gpt)
+        result = word_explainer(word)
         return {
             "status": 200,
             "body": result
@@ -36,34 +33,16 @@ async def explain(
 
 @router.post("/word_explorer/generate_sentences")
 async def generate_sentences(
-        request_data: WESentenceRequest,
-        settings: Annotated[Settings, Depends(get_settings)], 
+        request_data: WESentenceRequest, 
         temperature: float | int = 1
     ):
     word = request_data.word
     num_sentences = int(request_data.num_sentences)
-    request_api_key = request_data.api_key
     temperature = float(temperature)
     
     try:
-        api_key = settings.api_key if not request_api_key else request_api_key
-        gpt = get_llm(api_key, temperature)
-        result = sentence_generator(word, num_sentences, gpt)
-        return {
-            "status": 200,
-            "body": result
-        }
+        #api_key = settings.api_key if not request_api_key else request_api_key
+        response = sentence_generator(word, num_sentences)
+        return StreamingResponse(stream_examples(response, "}"), media_type="application/json")
     except Exception as e:
         return HTTPException(status_code=400, detail=str(e))
-
-from fastapi.responses import StreamingResponse
-import time
-def generate_data():
-    for i in range(1, 100):
-        time.sleep(1)
-        yield f"Data item {i}\n"
-
-@router.get("/word_explorer/generate_sentences/stream_data")
-async def stream_data():
-    data_generator = generate_data()
-    return StreamingResponse(data_generator, media_type="text/plain")

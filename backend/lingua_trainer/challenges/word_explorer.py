@@ -7,16 +7,35 @@
 
 
 import re
+import os
 import json
+import openai
+from dotenv import load_dotenv
 from typing import List, Dict
 from queryverse.llm import OpenAI
 from queryverse.prompter import SystemPrompter, UserPrompter
 
-def get_llm(api_key: str, temperature: float=1) -> OpenAI:
-    """Create llm object"""
-    gpt = OpenAI(api_key=api_key, temperature=temperature)
 
-    return gpt
+def load_env_var(env_name: str = "OPENAI_API_KEY", 
+                env_path: str | None = None) -> str:
+    """
+        Load an environment variable from a .env file
+    Args:
+        env_name: The name of the environment variable
+        env_path: The path to the env file
+    
+    Returns:
+        str: value of the environment variable
+    """
+    if env_path and os.path.exists(env_path):
+        load_dotenv(env_path)
+    else:
+        load_dotenv()
+    env_var = os.getenv(env_name, "")
+    return env_var
+
+# set api key
+openai.api_key = load_env_var(env_path='/Users/t.adeoti/codes-and-scripts/projects/llm_apps/.env')
 
 
 def json_parser(response: str) -> List[dict]:
@@ -28,7 +47,27 @@ def json_parser(response: str) -> List[dict]:
     return data
 
 
-def word_explanator(german_word: str, llm: OpenAI) -> List[Dict[str, str]]:
+def format_string_to_json(input_string: str):
+    """Helper function to format string to json"""
+    input_string = input_string.strip(",\n{").strip("\n").strip("{").strip("}").strip("")
+    return json.dumps(json.loads("{" + input_string + "}"))
+    
+
+def stream_examples(response, split_word: str):
+    """ Generator to stream individual examples """
+    joined_tokens = ''
+    for chunk in response:
+        if 'assistant' not in chunk:
+            joined_tokens += chunk['no_role']
+
+        if split_word in joined_tokens:
+            yield_tokens, joined_tokens = joined_tokens.split(split_word)
+            yield format_string_to_json(yield_tokens)
+    else:
+        yield format_string_to_json(joined_tokens)
+
+
+def word_explainer(german_word: str) -> List[Dict[str, str]]:
     """
     Get an explanation and synonyms of a German word.
 
@@ -45,7 +84,7 @@ def word_explanator(german_word: str, llm: OpenAI) -> List[Dict[str, str]]:
 
     Example:
     >>> german_word = "Haus"
-    >>> explanations_and_synonyms = word_explanator(german_word)
+    >>> explanations_and_synonyms = word_explainer(german_word)
     >>> print(explanations_and_synonyms)
     [{'explanation': 'A house is a place where people live.', 'synonyms': 'Haushalt'}]
     """
@@ -64,14 +103,15 @@ def word_explanator(german_word: str, llm: OpenAI) -> List[Dict[str, str]]:
         German Word: {word}
     """)
 
-    response = llm.prompt(messages=[system_prompt(), user_prompt(word=german_word)])
-    explanations_and_synonyms = json_parser(response[0]['assistant'])
-   
+    messages=[system_prompt(), user_prompt(word=german_word)]
+    response = OpenAI.prompt(messages, temperature=1, stream=False)
+    
+    explanations_and_synonyms = json_parser(response['messages'][0]['assistant'])
+    
     return explanations_and_synonyms
 
 
-
-def sentence_generator(german_word: str, number_of_sentences: int, llm: OpenAI) -> List[Dict[str, str]]:
+def sentence_generator(german_word: str, number_of_sentences: int) -> List[Dict[str, str]]:
     """
     Generate sentences in German based on a given word.
 
@@ -115,8 +155,7 @@ def sentence_generator(german_word: str, number_of_sentences: int, llm: OpenAI) 
         German Word: {word}
     """)
 
-    response = llm.prompt(messages=[system_prompt(), 
-                                    user_prompt(word=german_word, num_sent=number_of_sentences)])
-
-    generated_sentences = json_parser(response[0]['assistant'])
-    return generated_sentences
+    messages=[system_prompt(), user_prompt(word=german_word, num_sent=number_of_sentences)]
+    response = OpenAI.prompt(messages, temperature=1, stream=True)
+    
+    return response
