@@ -1,18 +1,10 @@
 import streamlit as st
 import json
-from apps.utils import send_post_request, send_streaming_post_request
-from st_pages import Page, Section, add_page_title, show_pages
-
-show_pages(
-    [
-        Page("run.py", "Home", "🏠"),
-        # Can use :<icon-name>: or the actual icon
-        Section(name="Lingua Trainer", icon=":teacher:"),
-        Page("apps/word_explorer.py", "Word Explorer", ":books:"),
-    ]
-)
+from st_pages import  add_page_title
+from lingua_trainer import send_post_request, send_streaming_post_request
 
 add_page_title() 
+
 st.subheader("Give a German word and Explore")
 st.markdown("***You could vary the quantity of explanations you see***")
 
@@ -73,21 +65,9 @@ def generate_sentences(word: str, num_sentences:int, temperature: float):
         else:
             st.error(f"An error occurred: {response}")
             st.stop()
-
-
-if 'api_key' not in st.session_state:
-    st.warning("Please supply an OpenAI api key and ensure to deactive it once you are done.")
-    
+  
 with st.sidebar:
-    st.title("API Key")
-    def form_callback():
-        st.session_state['api_key'] = st.session_state['api_key_temp']
-        st.session_state['api_key_temp'] = ""
-
-    with st.form(key='api_form'):
-        _ = st.text_input("Enter your API key:", key='api_key_temp')
-        api_key_submit = st.form_submit_button(label='Supply API key', on_click=form_callback)
-    temperature = st.slider("Select temperature", min_value=0.0, max_value=1.0, value=1.0, step=0.1)
+    temperature = st.slider("Select a temperature", min_value=0.0, max_value=1.0, value=1.0, step=0.1)
     
 word = st.text_input("Enter a word:")
 num_sentences = st.slider("Number of sentences to generate:", min_value=1, max_value=5, value=1, step=1)
