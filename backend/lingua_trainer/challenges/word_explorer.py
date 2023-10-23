@@ -67,7 +67,7 @@ def stream_examples(response, split_word: str):
         yield format_string_to_json(joined_tokens)
 
 
-def word_explainer(german_word: str) -> List[Dict[str, str]]:
+def word_explainer(german_word: str, temperature: float) -> List[Dict[str, str]]:
     """
     Get an explanation and synonyms of a German word.
 
@@ -104,14 +104,14 @@ def word_explainer(german_word: str) -> List[Dict[str, str]]:
     """)
 
     messages=[system_prompt(), user_prompt(word=german_word)]
-    response = OpenAI.prompt(messages, temperature=1, stream=False)
+    response = OpenAI.prompt(messages, temperature, stream=False)
     
     explanations_and_synonyms = json_parser(response['messages'][0]['assistant'])
     
     return explanations_and_synonyms
 
 
-def sentence_generator(german_word: str, number_of_sentences: int) -> List[Dict[str, str]]:
+def sentence_generator(german_word: str, number_of_sentences: int, temperature: float) -> List[Dict[str, str]]:
     """
     Generate sentences in German based on a given word.
 
@@ -156,6 +156,10 @@ def sentence_generator(german_word: str, number_of_sentences: int) -> List[Dict[
     """)
 
     messages=[system_prompt(), user_prompt(word=german_word, num_sent=number_of_sentences)]
-    response = OpenAI.prompt(messages, temperature=1, stream=True)
+    response = OpenAI.prompt(messages, temperature, stream=True)
     
     return response
+
+
+resp = word_explainer(german_word='Gehorchen', temperature=0)
+print("hello")
