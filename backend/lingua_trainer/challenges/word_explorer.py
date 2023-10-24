@@ -62,9 +62,11 @@ def stream_examples(response, split_word: str):
 
         if split_word in joined_tokens:
             yield_tokens, joined_tokens = joined_tokens.split(split_word)
-            yield format_string_to_json(yield_tokens)
+            yield_tokens = format_string_to_json(yield_tokens)
+            if yield_tokens: yield yield_tokens
     else:
-        yield format_string_to_json(joined_tokens)
+        yield_tokens = format_string_to_json(yield_tokens)
+        if yield_tokens: yield yield_tokens
 
 
 def word_explainer(german_word: str, temperature: float) -> List[Dict[str, str]]:

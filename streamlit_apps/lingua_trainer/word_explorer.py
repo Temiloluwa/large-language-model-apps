@@ -1,5 +1,6 @@
-import streamlit as st
 import json
+import requests
+import streamlit as st
 from st_pages import  add_page_title
 from lingua_trainer import send_post_request, send_streaming_post_request
 
@@ -16,7 +17,7 @@ def explain_word(word:str, temperature:float):
         api_key (str): _description_
         temperature (float): _description_
     """
-    url = 'http://localhost:8125/api/v1/challenges/word_explorer/word_explainer'
+    url = 'http://localhost:8100/api/v1/challenges/word_explorer/word_explainer'
     data = {
         'word': word
     } 
@@ -24,7 +25,7 @@ def explain_word(word:str, temperature:float):
 
     with st.spinner("Exploring..."):
         response = send_post_request(url, data, params)
-        if 'status' not in response:
+        if type(response) is list:
             for item in response:
                 st.subheader(word.capitalize())
                 st.markdown(f"{item['explanation']}")
@@ -43,7 +44,7 @@ def generate_sentences(word: str, num_sentences:int, temperature: float):
         num_sentences (int): _description_
         temperature (float): _description_
     """
-    url = 'http://localhost:8125/api/v1/challenges/word_explorer/generate_sentences'
+    url = 'http://localhost:8100/api/v1/challenges/word_explorer/generate_sentences'
     data = {
         'word': word,
         'num_sentences': num_sentences
@@ -53,21 +54,21 @@ def generate_sentences(word: str, num_sentences:int, temperature: float):
     st.subheader("Explanations")
     with st.spinner("Exploring..."):
         response = send_streaming_post_request(url, data, params)
-        if 'status' not in response:
+        if type(response) is requests.Response:## actually a generator response
             for it, chunk in enumerate(response.iter_content(chunk_size=1000)):
                 chunk = json.loads(chunk)
-                
                 st.markdown(f"**Background:** {chunk['context']}")
                 st.markdown(f"**You could say in German:** {chunk['german sentence']}")
                 st.markdown(f"**In English:** {chunk['english translation']}")
                 st.markdown("---")
-                if it == num_sentences - 1: break
+                if it == num_sentences - 1: 
+                    break
         else:
             st.error(f"An error occurred: {response}")
             st.stop()
   
 with st.sidebar:
-    temperature = st.slider("Select a temperature", min_value=0.0, max_value=5.0, value=1.0, step=0.1)
+    temperature = st.slider("Select a temperature", min_value=0.0, max_value=1.0, value=1.0, step=0.1)
     
 word = st.text_input("Enter a word:")
 num_sentences = st.slider("Number of sentences to generate:", min_value=1, max_value=5, value=1, step=1)
