@@ -47,26 +47,57 @@ def json_parser(response: str) -> List[dict]:
     return data
 
 
-def format_string_to_json(input_string: str):
-    """Helper function to format string to json"""
-    input_string = input_string.strip(",\n{").strip("\n").strip("{").strip("}").strip("")
-    return json.dumps(json.loads("{" + input_string + "}"))
-    
+def extract_json_in_string(input_string: str) -> str | None:
+    """
+    Extracts JSON from a given string.
 
-def stream_examples(response, split_word: str):
-    """ Generator to stream individual examples """
-    joined_tokens = ''
+    Args:
+        input_string (str): The input string that may contain JSON data.
+
+    Returns:
+        str | None: If valid JSON is found in the input string, it is extracted,
+                    parsed, and returned as a string. If no JSON is found or if
+                    the JSON is invalid, None is returned.
+    """
+    pattern = r'\{[^{}]*\}'  # Pattern to detect JSON
+    match = re.search(pattern, input_string)
+    if match:
+        matched_text = match.group()
+        try:
+            # If a match is found, perform final verification with json.loads
+            # We do another json.dumps because we want a string output
+            json_string = json.dumps(json.loads(matched_text))
+        except json.JSONDecodeError:
+            json_string = None
+
+        return json_string
+    else:
+        return None
+
+
+def stream_examples(response):
+    """
+    Stream JSON Examples from a Generator of Byte Strings.
+
+    Args:
+        response (generator): A generator that yields byte strings.
+
+    Yields:
+        str: Valid JSON strings extracted from the accumulated chunks.
+    """
+    accumulated_chunk = ""
     for chunk in response:
         if 'assistant' not in chunk:
-            joined_tokens += chunk['no_role']
+            accumulated_chunk += chunk['no_role']
 
-        if split_word in joined_tokens:
-            yield_tokens, joined_tokens = joined_tokens.split(split_word)
-            yield_tokens = format_string_to_json(yield_tokens)
-            if yield_tokens: yield yield_tokens
+        if '{' in accumulated_chunk and '}' in accumulated_chunk:
+            parsed_json = extract_json_in_string(accumulated_chunk)
+
+            if parsed_json:
+                yield parsed_json
+                accumulated_chunk = ""
     else:
-        yield_tokens = format_string_to_json(yield_tokens)
-        if yield_tokens: yield yield_tokens
+        yield ""
 
 
 def word_explainer(german_word: str, temperature: float) -> List[Dict[str, str]]:
@@ -161,7 +192,3 @@ def sentence_generator(german_word: str, number_of_sentences: int, temperature: 
     response = OpenAI.prompt(messages, temperature, stream=True)
     
     return response
-
-
-resp = word_explainer(german_word='Gehorchen', temperature=0)
-print("hello")

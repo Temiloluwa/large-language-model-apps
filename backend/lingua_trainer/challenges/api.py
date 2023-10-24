@@ -40,6 +40,6 @@ async def generate_sentences(
     try:
         #api_key = settings.api_key if not request_api_key else request_api_key
         response = sentence_generator(word, num_sentences, temperature)
-        return StreamingResponse(stream_examples(response, "}"), media_type="application/json")
+        return StreamingResponse(stream_examples(response), media_type="application/json")
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Bad Request {str(e)}")
