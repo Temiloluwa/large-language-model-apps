@@ -196,13 +196,12 @@ def sentence_generator(german_word: str, number_of_sentences: int, temperature: 
         Use partizip II instead of praeteritum. Additionally, vary the tense (present, past, future), tone (active or passive), and quantity (singular or plural) of the word.
         [word]: Geehrte
         [number of sentences]: 2
-        [context]In a formal business letter, addressing a company's board of directors
-        [german]Sehr geehrte Herren Vorstände, Ich möchte Ihnen mitteilen, dass unsere Firma im nächsten Quartal voraussichtlich eine Gewinnsteigerung verzeichnen wird.
-        [english]Dear honored board members, I would like to inform you that our company is expected to experience an increase in profits in the next quarter.
-        <hr>
-        [context]At a prestigious awards ceremony, introducing a well-respected guest speaker.
-        [german]Meine sehr geehrten Damen und Herren, It is my great honor to introduce to you Mr. Schmidt, who is renowned as an expert in the field of renewable energy.
-        [english]Ladies and gentlemen, Es ist mir eine große Ehre, Ihnen Herrn Schmidt vorstellen zu dürfen, der als Experte auf dem Gebiet der erneuerbaren Energien gilt.
+        [context1]In a formal business letter, addressing a company's board of directors
+        [german1]Sehr geehrte Herren Vorstände, Ich möchte Ihnen mitteilen, dass unsere Firma im nächsten Quartal voraussichtlich eine Gewinnsteigerung verzeichnen wird.
+        [english1]Dear honored board members, I would like to inform you that our company is expected to experience an increase in profits in the next quarter.
+        [context2]At a prestigious awards ceremony, introducing a well-respected guest speaker.
+        [german2]Meine sehr geehrten Damen und Herren, It is my great honor to introduce to you Mr. Schmidt, who is renowned as an expert in the field of renewable energy.
+        [english2]Ladies and gentlemen, Es ist mir eine große Ehre, Ihnen Herrn Schmidt vorstellen zu dürfen, der als Experte auf dem Gebiet der erneuerbaren Energien gilt.
         ##
         [word]: "{word}"
         [number of sentences]: {num_sent}
