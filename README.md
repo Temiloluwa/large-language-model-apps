@@ -2,6 +2,13 @@
 
 In this repo, I learn, research, and develop LLM apps for different applications.
 
+## Deployed Applications
+
+|S/N  | Code  | Application |
+|---|---|---|
+| 1  | [Streamlit Apps](https://github.com/Temiloluwa/large-language-model-apps/tree/main/streamlit_apps)| https://app.hifeyinc.com |
+| 2  | [LLM Apps Backend API](https://github.com/Temiloluwa/large-language-model-apps/tree/main/backend) | https://backend.hifeyinc.com/docs|
+
 
 ## Projects
 
