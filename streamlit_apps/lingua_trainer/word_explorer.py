@@ -1,4 +1,5 @@
 import re
+import os
 import json
 import requests
 import streamlit as st
@@ -6,7 +7,7 @@ from st_pages import  add_page_title
 from lingua_trainer import send_post_request, send_streaming_post_request
 
 # FAST API server port
-HOST='backend'
+HOST=os.environ.get("HOST", "localhost")
 SERVER_PORT=8100
 
 add_page_title() 
