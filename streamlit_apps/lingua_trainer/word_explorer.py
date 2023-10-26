@@ -1,3 +1,4 @@
+import re
 import json
 import requests
 import streamlit as st
@@ -17,7 +18,7 @@ def explain_word(word:str, temperature:float):
         api_key (str): _description_
         temperature (float): _description_
     """
-    url = 'http://localhost:8100/api/v1/challenges/word_explorer/word_explainer'
+    url = 'http://localhost:8125/api/v1/challenges/word_explorer/word_explainer'
     data = {
         'word': word
     } 
@@ -44,7 +45,7 @@ def generate_sentences(word: str, num_sentences:int, temperature: float):
         num_sentences (int): _description_
         temperature (float): _description_
     """
-    url = 'http://localhost:8100/api/v1/challenges/word_explorer/generate_sentences'
+    url = 'http://localhost:8125/api/v1/challenges/word_explorer/generate_sentences'
     data = {
         'word': word,
         'num_sentences': num_sentences
@@ -52,17 +53,27 @@ def generate_sentences(word: str, num_sentences:int, temperature: float):
     params = {'temperature': temperature}
 
     st.subheader("Explanations")
+    answer_placeholder = st.empty()
+    answers = []
+
     with st.spinner("Exploring..."):
         response = send_streaming_post_request(url, data, params)
         if type(response) is requests.Response:## actually a generator response
-            for it, chunk in enumerate(response.iter_content(chunk_size=1000)):
-                chunk = json.loads(chunk)
-                st.markdown(f"**Background:** {chunk['context']}")
-                st.markdown(f"**You could say in German:** {chunk['german sentence']}")
-                st.markdown(f"**In English:** {chunk['english translation']}")
-                st.markdown("---")
-                if it == num_sentences - 1: 
-                    break
+            for it, chunk in enumerate(response.iter_content(chunk_size=30)):
+                # chunk = json.loads(chunk)
+                # st.markdown(f"**Background:** {chunk['context']}")
+                # st.markdown(f"**You could say in German:** {chunk['german sentence']}")
+                # st.markdown(f"**In English:** {chunk['english translation']}")
+                # st.markdown("---")
+                answers.append(chunk.decode("utf-8"))
+                display_text = "".join(answers)
+                display_text = re.sub(r'\[Context\]|\[context\]', "**Background:** ", display_text)
+                display_text = re.sub(r'\[German\]|\[german\]', "\n**You could say in German:** ", display_text)
+                display_text = re.sub(r'\[English\]|\[english\]', "\n**In English:** ", display_text)
+                #display_text = display_text.replace("\n\n", "---")
+                answer_placeholder.markdown(f"{display_text}")
+                # if it == num_sentences - 1: 
+                #     break
         else:
             st.error(f"An error occurred: {response}")
             st.stop()

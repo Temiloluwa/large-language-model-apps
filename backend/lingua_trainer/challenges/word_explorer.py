@@ -75,7 +75,7 @@ def extract_json_in_string(input_string: str) -> str | None:
         return None
 
 
-def stream_examples(response):
+def stream_json_examples(response):
     """
     Stream JSON Examples from a Generator of Byte Strings.
 
@@ -98,6 +98,22 @@ def stream_examples(response):
                 accumulated_chunk = ""
     else:
         yield ""
+
+
+def stream_tokens(response):
+    """
+    Stream a token at a time.
+
+    Args:
+        response (generator): A generator that yields byte strings.
+
+    Yields:
+        str: stream a token at a time
+    """
+    accumulated_chunk = ""
+    for chunk in response:
+        if 'assistant' not in chunk:
+            yield chunk['no_role']
 
 
 def word_explainer(german_word: str, temperature: float) -> List[Dict[str, str]]:
@@ -174,25 +190,35 @@ def sentence_generator(german_word: str, number_of_sentences: int, temperature: 
 
     system_prompt = SystemPrompter("You are a fluent German speaker that is great at following instructions.")
     user_prompt = UserPrompter("""
-        Generate {num_sent} sentences in German for the word "{word}". 
+        Generate sentences in German for a word. 
         Each sentence should include an English contextual scenario followed by the corresponding German sentence.
         Ensure that the sentences differ in meaning, and include varied conjugations for the verbs. 
         Use partizip II instead of praeteritum. Additionally, vary the tense (present, past, future), tone (active or passive), and quantity (singular or plural) of the word.
-        Desired Format:
-        [context]<relevant context in english>[german]<german sentence>[english]<english translation>
+        [word]: Geehrte
+        [number of sentences]: 2
+        [context]In a formal business letter, addressing a company's board of directors
+        [german]Sehr geehrte Herren Vorstände, Ich möchte Ihnen mitteilen, dass unsere Firma im nächsten Quartal voraussichtlich eine Gewinnsteigerung verzeichnen wird.
+        [english]Dear honored board members, I would like to inform you that our company is expected to experience an increase in profits in the next quarter.
+        <hr>
+        [context]At a prestigious awards ceremony, introducing a well-respected guest speaker.
+        [german]Meine sehr geehrten Damen und Herren, It is my great honor to introduce to you Mr. Schmidt, who is renowned as an expert in the field of renewable energy.
+        [english]Ladies and gentlemen, Es ist mir eine große Ehre, Ihnen Herrn Schmidt vorstellen zu dürfen, der als Experte auf dem Gebiet der erneuerbaren Energien gilt.
+        ##
+        [word]: "{word}"
+        [number of sentences]: {num_sent}
     """)
 
     messages=[system_prompt(), user_prompt(word=german_word, num_sent=number_of_sentences)]
-    response = OpenAI.prompt(messages, temperature, stream=True)
+    response = OpenAI.prompt(messages, temperature, stream=True, max_tokens=3500)
     
     return response
 
-german_word = "wirklich"
-number_of_sentences = 3
-temperature = 1
-all_chunks = ""
-for chunk in sentence_generator(german_word, number_of_sentences, temperature):
-    if 'assistant' not in chunk:
-        all_chunks += chunk['no_role']
-print(all_chunks)
+# german_word = "wirklich"
+# number_of_sentences = 3
+# temperature = 1
+# all_chunks = ""
+# for chunk in sentence_generator(german_word, number_of_sentences, temperature):
+#     if 'assistant' not in chunk:
+#         all_chunks += chunk['no_role']
+# print(all_chunks)
 
