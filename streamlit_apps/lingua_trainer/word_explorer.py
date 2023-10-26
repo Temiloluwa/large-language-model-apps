@@ -6,6 +6,7 @@ from st_pages import  add_page_title
 from lingua_trainer import send_post_request, send_streaming_post_request
 
 # FAST API server port
+HOST='backend'
 SERVER_PORT=8100
 
 add_page_title() 
@@ -20,7 +21,7 @@ def explain_word(word:str, temperature:float):
         api_key (str): _description_
         temperature (float): _description_
     """
-    url = f'http://localhost:{SERVER_PORT}/api/v1/challenges/word_explorer/word_explainer'
+    url = f'http://{HOST}:{SERVER_PORT}/api/v1/challenges/word_explorer/word_explainer'
     data = {
         'word': word
     } 
@@ -47,7 +48,7 @@ def generate_sentences(word: str, num_sentences:int, temperature: float):
         num_sentences (int): _description_
         temperature (float): _description_
     """
-    url = f'http://localhost:{SERVER_PORT}/api/v1/challenges/word_explorer/generate_sentences'
+    url = f'http://{HOST}:{SERVER_PORT}/api/v1/challenges/word_explorer/generate_sentences'
     data = {
         'word': word,
         'num_sentences': num_sentences
