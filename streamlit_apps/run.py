@@ -10,7 +10,7 @@ show_pages(
         Page("run.py", "Home", "🏠"),
         # Can use :<icon-name>: or the actual icon
         Section(name="Lingua Trainer", icon=":teacher:"),
-        Page("apps/word_explorer.py", "Word Explorer", ":books:"),
+        Page("lingua_trainer/word_explorer.py", "Word Explorer", ":books:"),
     ]
 )
 

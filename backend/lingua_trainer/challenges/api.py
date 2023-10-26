@@ -3,7 +3,7 @@ from typing_extensions import Annotated
 from functools import lru_cache
 from fastapi.responses import StreamingResponse
 from .models import (WEWordRequest, WESentenceRequest, Settings)
-from .word_explorer import (word_explainer, sentence_generator, stream_examples)
+from .word_explorer import (word_explainer, sentence_generator, stream_tokens)
 
 router = APIRouter()
 
@@ -21,14 +21,11 @@ async def explain(
     temperature = float(temperature)
     
     try:
-        result = word_explainer(word)
-        return {
-            "status": 200,
-            "body": result
-        }
+        result = word_explainer(word, temperature)
+        return result
         
     except Exception as e:
-        return HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=f"Bad Request {str(e)}")
 
 
 @router.post("/word_explorer/generate_sentences")
@@ -42,7 +39,7 @@ async def generate_sentences(
     
     try:
         #api_key = settings.api_key if not request_api_key else request_api_key
-        response = sentence_generator(word, num_sentences)
-        return StreamingResponse(stream_examples(response, "}"), media_type="application/json")
+        response = sentence_generator(word, num_sentences, temperature)
+        return StreamingResponse(stream_tokens(response), media_type="application/json")
     except Exception as e:
-        return HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=f"Bad Request {str(e)}")

@@ -42,3 +42,5 @@ backend/run.sh
 backend-env/
 
 *try.py
+
+.vscode
