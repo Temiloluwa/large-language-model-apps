@@ -6,7 +6,7 @@ COPY .env /app/.env
 ENV ENVFILE /app/.env
 
 COPY requirements_backend.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements_backend.txt
 
 COPY backend/ /app/
 COPY lingua_trainer/app/word_explorer.py /app/lingua_trainer/challenges/
