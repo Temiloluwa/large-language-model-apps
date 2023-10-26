@@ -174,21 +174,25 @@ def sentence_generator(german_word: str, number_of_sentences: int, temperature: 
 
     system_prompt = SystemPrompter("You are a fluent German speaker that is great at following instructions.")
     user_prompt = UserPrompter("""
-        Given a German word, generate {num_sent} sentences with the word.
-        First provide a contextual scenario in English, then generate the sentence in German.
-        The sentences must vary in meaning, conjugated tense, tone (passive or active tone), and quantity (singular or plural) of the word.
-        Avoid using the praeteritum; instead, use partizip II.
-
-        Output Format (comma-separated JSON format):
-        
-        context: <A series of sentences in English describing a scenario for which the generated sentence is applicable>
-        german sentence: <A sentence that was generated based on the supplied German word>
-        english translation: <Direct translation of the generated sentence to English>
-
-        German Word: {word}
+        Generate {num_sent} sentences in German for the word "{word}". 
+        Each sentence should include an English contextual scenario followed by the corresponding German sentence.
+        Ensure that the sentences differ in meaning, and include varied conjugations for the verbs. 
+        Use partizip II instead of praeteritum. Additionally, vary the tense (present, past, future), tone (active or passive), and quantity (singular or plural) of the word.
+        Desired Format:
+        [context]<relevant context in english>[german]<german sentence>[english]<english translation>
     """)
 
     messages=[system_prompt(), user_prompt(word=german_word, num_sent=number_of_sentences)]
     response = OpenAI.prompt(messages, temperature, stream=True)
     
     return response
+
+german_word = "wirklich"
+number_of_sentences = 3
+temperature = 1
+all_chunks = ""
+for chunk in sentence_generator(german_word, number_of_sentences, temperature):
+    if 'assistant' not in chunk:
+        all_chunks += chunk['no_role']
+print(all_chunks)
+
