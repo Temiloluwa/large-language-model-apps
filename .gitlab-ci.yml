@@ -20,6 +20,7 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   GIT_SUBMODULE_STRATEGY: recursive
   GIT_SUBMODULE_FORCE_HTTPS: "true"
+  DEFAULT_API_KEY: $DEFAULT_API_KEY
 
 stages:
   - build

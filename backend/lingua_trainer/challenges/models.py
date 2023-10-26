@@ -13,7 +13,6 @@ class WESentenceRequest(BaseModel):
 
 
 class Settings(BaseSettings):
-    api_key: str = ""
-
-    # update this to use docker secrets: https://docs.pydantic.dev/latest/concepts/pydantic_settings/
-    model_config = SettingsConfigDict(env_file=".env")
+    DEFAULT_API_KEY: str = ""
+    CLIENT_API_KEY: str = ""
+    
