@@ -1,11 +1,11 @@
 REPO_NAME := temmiecvml
-BACKEND_VERSION := 0.0.1-dev # g refers to arm version
-STREAMLIT_APPS_VERSION := 0.0.1-dev
+BACKEND_VERSION := 0.0.1-dev.g # g refers to arm version
+STREAMLIT_APPS_VERSION := 0.0.1-dev.g
 DOCKERFILE_BACKEND := Dockerfile.backend
 DOCKERFILE_STREAMLIT_APPS := Dockerfile.streamlit_apps
 CI_REGISTRY_USER := $(REPO_NAME) # add to ci/cd > variables 
 CI_REGISTRY_PASSWORD := $(shell echo $$CI_REGISTRY_PASSWORD) # add to ci/cd > variables 
-TARGET_PLATFORM := linux/amd64 # linux/arm64, linux/amd64
+TARGET_PLATFORM := linux/arm64 # linux/arm64, linux/amd64
 CI_REGISTRY := docker.io # add to ci/cd > variables  
 CI_REGISTRY_IMAGE_BACKEND := index.docker.io/$(REPO_NAME)/hyc-backend:$(BACKEND_VERSION)
 CI_REGISTRY_IMAGE_STREAMLIT_APPS := index.docker.io/$(REPO_NAME)/hyc-streamlit-apps:$(STREAMLIT_APPS_VERSION)
