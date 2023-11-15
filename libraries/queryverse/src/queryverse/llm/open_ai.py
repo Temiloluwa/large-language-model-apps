@@ -62,8 +62,8 @@ class OpenAILLM(LLM):
             stream=stream)
         
 
-        response = self.response_parser_chunked(response) if stream else \
-                 self.response_parser(response)
+        # response = self.response_parser_chunked(response) if stream else \
+        #          self.response_parser(response)
         
         return response
 
