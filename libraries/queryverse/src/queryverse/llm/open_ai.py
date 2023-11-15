@@ -62,8 +62,8 @@ class OpenAILLM(LLM):
             stream=stream)
         
 
-        # response = self.response_parser_chunked(response) if stream else \
-        #          self.response_parser(response)
+        response = self.response_parser_chunked(response) if stream else \
+                 self.response_parser(response)
         
         return response
 
@@ -100,7 +100,7 @@ class OpenAILLM(LLM):
             model=model,
             stream=stream)
 
-        response = self.response_parser_chunked(response) if stream else \
+        response = self.aresponse_parser_chunked(response) if stream else \
                  self.response_parser(response)
         
         return response
@@ -115,7 +115,6 @@ class OpenAILLM(LLM):
         Returns:
             dict: Parsed response including messages and usage information.
         """
-
         messages = []
         for choice in response.choices:
             messages.append({
@@ -140,10 +139,26 @@ class OpenAILLM(LLM):
         Yields:
             list: Parsed message objects from the response.
         """
-
         for chunk in response:
-            chunk_message = chunk.get('choices')[0].get('delta')
-            yield {
-                chunk_message.get("role", "no_role"): chunk_message.get("content", ""),
-                "finish_reason": chunk.get('choices')[0].get('finish_reason')
-            }
+            chunk_message = chunk.choices[0].delta
+            finish_reason = chunk.choices[0].finish_reason or ""
+            role = chunk_message.role or "no_role"
+            content = chunk_message.content or ""
+            yield { role: content, "finish_reason": finish_reason}
+
+
+    async def aresponse_parser_chunked(self, response):
+        """Async Parse a chunked response from OpenAI.
+
+        Args:
+            response (dict): Chunked response from OpenAI.
+
+        Yields:
+            list: Parsed message objects from the response.
+        """
+        async for chunk in response:
+            chunk_message = chunk.choices[0].delta
+            finish_reason = chunk.choices[0].finish_reason or ""
+            role = chunk_message.role or "no_role"
+            content = chunk_message.content or ""
+            yield { role: content, "finish_reason": finish_reason}
