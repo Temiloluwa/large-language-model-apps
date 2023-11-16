@@ -8,16 +8,27 @@ from fastapi.responses import StreamingResponse
 from .models import (WEWordRequest, WESentenceRequest, Settings)
 from .word_explorer import (word_explainer, sentence_generator, stream_tokens)
 
-router = APIRouter()
 
+logger = logging.getLogger("fastapi_logger")
+logger.setLevel(logging.INFO)
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+console_handler.setFormatter(formatter)
+logger.addHandler(console_handler)
+
+
+router = APIRouter()
 
 @lru_cache
 def get_gpt():
     """ Get LLM for lingua trainer"""
     # set open api key as environmental variable from docker secrets
     api_key = Settings().OPENAI_API_KEY
+    logger.info(f"API key: {api_key}")
     # decode base64 encode string
-    os.environ["OPENAI_API_KEY"] = base64.b64decode(api_key).decode("utf-8")
+    os.environ["OPENAI_API_KEY"] = base64.b64decode(api_key).decode("utf-8", errors="replace")
+    logger.info(f"Decoded api key {os.environ["OPENAI_API_KEY"]}")
     gpt = OpenAILLM(is_async=True)
     
     return gpt
