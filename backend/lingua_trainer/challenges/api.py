@@ -27,8 +27,9 @@ def get_gpt():
     api_key = Settings().OPENAI_API_KEY
     logger.info(f"API key: {api_key}")
     # decode base64 encode string
-    os.environ["OPENAI_API_KEY"] = base64.b64decode(api_key).decode("utf-8", errors="replace")
-    logger.info(f"Decoded api key {os.environ["OPENAI_API_KEY"]}")
+    api_key = base64.b64decode(api_key).decode("utf-8", errors="replace")
+    os.environ["OPENAI_API_KEY"] = api_key 
+    logger.info(f"Decoded API key: {api_key}")
     gpt = OpenAILLM(is_async=True)
     
     return gpt
