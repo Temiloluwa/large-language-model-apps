@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from auth import auth_router
-from lingua_trainer import (users_router, words_router, challenges_router, llm_lingua_trainer)
+from lingua_trainer import (users_router, words_router, challenges_router)
 from utils import load_api_kwargs
 #from starlette.middleware.sessions import SessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware

@@ -17,7 +17,7 @@ def get_gpt():
     # set open api key as environmental variable from docker secrets
     api_key = Settings().OPENAI_API_KEY
     # decode base64 encode string
-    os.path.environ["OPENAI_API_KEY"] = base64.b64decode(api_key).decode("utf-8")
+    os.environ["OPENAI_API_KEY"] = base64.b64decode(api_key).decode("utf-8")
     gpt = OpenAILLM(is_async=True)
     
     return gpt
