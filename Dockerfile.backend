@@ -2,9 +2,6 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-ARG DEFAULT_API_KEY
-ENV DEFAULT_API_KEY=$DEFAULT_API_KEY
-
 COPY requirements_backend.txt .
 RUN pip install --no-cache-dir -r requirements_backend.txt
 
