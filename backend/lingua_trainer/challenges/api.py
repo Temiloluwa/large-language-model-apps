@@ -26,8 +26,8 @@ def get_gpt():
 @router.post("/word_explorer/word_explainer")
 async def explain(
         request_data: WEWordRequest, 
-        temperature: float | int = 1,
-        gpt: Annotated[OpenAILLM, Depends(get_gpt)]):
+        gpt: Annotated[OpenAILLM, Depends(get_gpt)],
+        temperature: float | int = 1):
     word = request_data.word
     temperature = float(temperature)
     
@@ -42,8 +42,8 @@ async def explain(
 @router.post("/word_explorer/generate_sentences")
 async def generate_sentences(
         request_data: WESentenceRequest,
-        temperature: float | int = 1,
-        gpt: Annotated[OpenAILLM, Depends(get_gpt)]):
+        gpt: Annotated[OpenAILLM, Depends(get_gpt)],
+        temperature: float | int = 1):
 
     word = request_data.word
     num_sentences = int(request_data.num_sentences)
