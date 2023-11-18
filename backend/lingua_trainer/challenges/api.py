@@ -18,6 +18,18 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 console_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 
+def read_secret_file(file_path, logger):
+    try:
+        with open(file_path, 'r') as file:
+            secret_content = file.read()
+            return secret_content
+    except FileNotFoundError:
+        logger.error(f"Error: File not found at path '{file_path}'.")
+        return None
+    except Exception as e:
+        logger.error(f"Error reading file: {e}")
+        return None
+
 
 router = APIRouter()
 
@@ -25,10 +37,9 @@ router = APIRouter()
 def get_gpt():
     """ Get LLM for lingua trainer"""
     # set open api key as environmental variable from docker secrets
-    api_key = Settings().OPENAI_API_KEY
-    logger.info(f"API key: {api_key}")
-    # decode base64 encode string
-    api_key = base64.b64decode(api_key).decode("utf-8", errors="replace")
+    api_key_path = Settings().OPENAI_API_KEY
+    logger.info(f"API key: {api_key_path}")
+    api_key = read_secret_file(api_key_path, logger)
     os.environ["OPENAI_API_KEY"] = api_key 
     logger.info(f"Decoded API key: {api_key}")
     gpt = OpenAILLM(is_async=True)
