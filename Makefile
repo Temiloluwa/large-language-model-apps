@@ -9,13 +9,12 @@ TARGET_PLATFORM := linux/arm64 # linux/arm64, linux/amd64
 CI_REGISTRY := docker.io # add to ci/cd > variables  
 CI_REGISTRY_IMAGE_BACKEND := index.docker.io/$(REPO_NAME)/hyc-backend:$(BACKEND_VERSION)
 CI_REGISTRY_IMAGE_STREAMLIT_APPS := index.docker.io/$(REPO_NAME)/hyc-streamlit-apps:$(STREAMLIT_APPS_VERSION)
-DEFAULT_API_KEY := $(shell echo $$DEFAULT_API_KEY)
 
 login:
 	docker login --username $(CI_REGISTRY_USER) --password $(CI_REGISTRY_PASSWORD) $(CI_REGISTRY)
 	
 build:
-	docker build --progress=plain --build-arg DEFAULT_API_KEY=$(DEFAULT_API_KEY) --platform $(TARGET_PLATFORM) -f $(DOCKERFILE_BACKEND) . --no-cache -t $(CI_REGISTRY_IMAGE_BACKEND)
+	docker build --progress=plain --platform $(TARGET_PLATFORM) -f $(DOCKERFILE_BACKEND) . --no-cache -t $(CI_REGISTRY_IMAGE_BACKEND)
 	docker build --progress=plain --platform $(TARGET_PLATFORM) -f $(DOCKERFILE_STREAMLIT_APPS) . --no-cache -t $(CI_REGISTRY_IMAGE_STREAMLIT_APPS)
 	
 push:
