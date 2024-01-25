@@ -38,4 +38,3 @@ class AssistantPrompter(BasePrompter):
     def __init__(self, template=""):
         super().__init__(template)
         self.role="assistant"
-
