@@ -1,6 +1,6 @@
 REPO_NAME := temmiecvml
-BACKEND_VERSION := 0.0.1-dev.g # g refers to arm version
-STREAMLIT_APPS_VERSION := 0.0.1-dev.g
+BACKEND_VERSION := 0.0.2-g # g refers to arm version
+STREAMLIT_APPS_VERSION := 0.0.2-g
 DOCKERFILE_BACKEND := Dockerfile.backend
 DOCKERFILE_STREAMLIT_APPS := Dockerfile.streamlit_apps
 CI_REGISTRY_USER := $(REPO_NAME) # add to ci/cd > variables 

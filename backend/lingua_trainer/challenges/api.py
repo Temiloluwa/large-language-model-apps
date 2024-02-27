@@ -41,7 +41,6 @@ def get_gpt():
     logger.info(f"API key: {api_key_path}")
     api_key = read_secret_file(api_key_path, logger)
     os.environ["OPENAI_API_KEY"] = api_key 
-    logger.info(f"Decoded API key: {api_key}")
     gpt = OpenAILLM(is_async=True)
     
     return gpt
