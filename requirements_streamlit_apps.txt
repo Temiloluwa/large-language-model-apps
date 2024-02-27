@@ -1,4 +1,3 @@
-streamlit
-queryverse==0.1.3
-st-pages
-requests
+streamlit==1.28.2
+st-pages==0.4.5
+requests==2.31.0

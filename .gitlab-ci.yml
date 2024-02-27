@@ -31,4 +31,4 @@ build_image:
     - make build
     - make push
   rules:
-    - if: $CI_COMMIT_BRANCH == "main" && $DEPLOY_IMAGE == "true"
+    - if: $CI_COMMIT_BRANCH == "staging" && $DEPLOY_IMAGE == "true"
