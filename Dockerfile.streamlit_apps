@@ -12,4 +12,4 @@ COPY streamlit_apps/ /app/
 
 EXPOSE 8501
 
-CMD ["streamlit", "run", "run.py"]
+CMD ["streamlit", "run", "--server.enableCORS=false", "run.py"]
