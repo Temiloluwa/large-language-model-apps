@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name="queryverse",
-    version="0.1.3",
+    version="0.1.4",
     description="A lightweight prompting library",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -19,7 +19,7 @@ setup(
     ],
     keywords="lightweight llm prompting library",
     install_requires=[
-        "openai"
+        "openai==1.2.4", "python-dotenv==1.0.0"
     ],
     python_requires=">=3.9",
 )

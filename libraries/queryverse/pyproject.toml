@@ -1,19 +1,25 @@
-[build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
-
-
 [project]
 name = "queryverse"
-version = "0.1.3"
+version = "0.1.4"
 description = "A lightweight prompting library"
 authors = [
-    {name = "temiloluwa", email = "temilolu74@gmail.com"},
+    {name = "Temiloluwa Adeoti", email = "temilolu74@gmail.com"},
+    {name = "temiloluwa adeoti", email = "temilolu74@gmail.com"},
 ]
 dependencies = [
-    "openai>=0.28.1"
+    "openai==1.2.4",
 ]
 requires-python = ">=3.9"
 readme = "README.md"
 license = {text = "MIT"}
+keywords = ["lightweight llm prompting library"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.9",
+]
 
+[project.urls]
+Homepage = "https://github.com/temiloluwa/lingua_trainer/queryverse"
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
