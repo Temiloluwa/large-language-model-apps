@@ -1,6 +1,6 @@
-# Hyc Apps
+# HYC Apps
 
-In this repo, I learn, research, and develop LLM apps for different applications.
+In this repo, I learn, research, and develop Vision - Language apps for different applications.
 
 ## Deployed Applications
 
