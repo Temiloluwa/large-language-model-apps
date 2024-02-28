@@ -2,10 +2,10 @@
 def load_api_kwargs():
     """ Fast API kwargs """
     kwargs = {
-            "title": "LLM Apps Backend",
-            "description": "A Backend Rest Api for LLM apps",
+            "title": "Hyc Apps Backend",
+            "description": "A Backend Rest Api for Hyc Apps",
             "summary": """
-                This is an application that provides a backend service for multiple LLM apps.
+                This is an application that provides a backend service for multiple Vision - Language apps.
             """,
             "version": "0.0.1",
             "terms_of_service": "https://www.hifeyinc.com/terms/",
